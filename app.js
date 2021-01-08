@@ -1,16 +1,19 @@
 var createError = require('http-errors');
 var express = require('express'),
 bodyParser = require("body-parser");
-port = 3080;;
+port = 3060;
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 // load mongoose package
 var mongoose = require('mongoose');
 var cors = require('cors');
+const GridFsStorage = require('multer-gridfs-storage')
+const Grid = require('gridfs-stream')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var inform = require('./routes/inform');
+var image = require('./routes/image');
 
 var app = express();
 //CORS Middleware
@@ -35,6 +38,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/inform', inform);
+app.use('/image', image);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -62,4 +66,11 @@ mongoose.connect('mongodb+srv://clemmy:10235035royal@cluster0.frwjn.mongodb.net/
     .then(() => console.log('connection succesful'))
     .catch((err) => console.error(err));
 
+let conn = mongoose.connection
+let gfs
+    conn.once('open', () => {
+        //initialize our stream
+        gfs = Grid(conn.db, mongoose.mongo)
+        gfs.collection('imageUpload')
+    })
 module.exports = app;
