@@ -22,6 +22,9 @@ var InformSchema = new mongoose.Schema({
   animal_type:String,
   sex: String,
   time:{type: Date, default: now},
-  location: String
+  location: String,
+  location2: String,
+  location3: String,
+  location4: String
 });
 module.exports = mongoose.model('Inform', InformSchema);
