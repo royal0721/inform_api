@@ -1,2 +1,2 @@
 # node.js api file
-This is the backend api for animal platform
+這是用來做為後端api的node.js api
